@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JoroSpray: The Joros are spreading</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,700&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <style>
+      /* ===== 1970s comic-book design: black, yellow, red, paper ===== */
+      :root {
+        color-scheme: light;
+        --x-ink: #111111;
+        --x-yellow: #ffd200;
+        --x-red: #d7191f;
+        --x-paper: #fff6dc;
+        --x-white: #ffffff;
+        --x-display: "Bangers", Impact, "Arial Narrow Bold", "Arial Narrow", sans-serif;
+        --x-body: "Comic Neue", "Comic Sans MS", "Chalkboard SE", cursive;
+        --x-line: 4px;
+        --x-drop: 6px;
+        --x-gap: 14px;
+        --x-burst-a: polygon(50.0% 0.0%, 58.5% 13.0%, 71.7% 5.0%, 73.7% 20.3%, 89.1% 18.8%, 84.2% 33.5%, 98.7% 38.9%, 88.0% 50.0%, 98.7% 61.1%, 84.2% 66.5%, 89.1% 81.2%, 73.7% 79.7%, 71.7% 95.0%, 58.5% 87.0%, 50.0% 100.0%, 41.5% 87.0%, 28.3% 95.0%, 26.3% 79.7%, 10.9% 81.2%, 15.8% 66.5%, 1.3% 61.1%, 12.0% 50.0%, 1.3% 38.9%, 15.8% 33.5%, 10.9% 18.8%, 26.3% 20.3%, 28.3% 5.0%, 41.5% 13.0%);
+        --x-burst-b: polygon(50.0% 0.0%, 56.3% 10.5%, 65.5% 2.4%, 68.2% 14.4%, 79.4% 9.5%, 78.3% 21.7%, 90.5% 20.6%, 85.6% 31.8%, 97.6% 34.5%, 89.5% 43.7%, 100.0% 50.0%, 89.5% 56.3%, 97.6% 65.5%, 85.6% 68.2%, 90.5% 79.4%, 78.3% 78.3%, 79.4% 90.5%, 68.2% 85.6%, 65.5% 97.6%, 56.3% 89.5%, 50.0% 100.0%, 43.7% 89.5%, 34.5% 97.6%, 31.8% 85.6%, 20.6% 90.5%, 21.7% 78.3%, 9.5% 79.4%, 14.4% 68.2%, 2.4% 65.5%, 10.5% 56.3%, 0.0% 50.0%, 10.5% 43.7%, 2.4% 34.5%, 14.4% 31.8%, 9.5% 20.6%, 21.7% 21.7%, 20.6% 9.5%, 31.8% 14.4%, 34.5% 2.4%, 43.7% 10.5%);
+        --x-dots-ink: radial-gradient(circle, rgb(17 17 17 / 0.16) 1.5px, transparent 1.8px) 0 0 / 10px 10px;
+        --x-dots-red: radial-gradient(circle, rgb(215 25 31 / 0.32) 2px, transparent 2.4px) 0 0 / 11px 11px;
+        --x-dots-yellow: radial-gradient(circle, rgb(255 210 0 / 0.38) 1.8px, transparent 2.2px) 0 0 / 11px 11px;
+      }
+      body {
+        background: var(--x-white);
+        color: var(--x-ink);
+        font: 700 17px/1.5 var(--x-body);
+      }
+      .page { max-width: 1180px; padding-inline: 18px; padding-block: 0 0; gap: 0; }
+      .x-main { display: grid; gap: 34px; padding-block: 22px 40px; }
+      .x-main section { scroll-margin-top: 76px; }
+      :focus-visible { outline: 3px solid var(--x-red); outline-offset: 3px; border-radius: 0; }
+
+      /* Top strip */
+      .x-top {
+        position: sticky; top: 0; z-index: 20;
+        display: flex; align-items: center; gap: 16px;
+        margin-inline: -18px; padding: 6px 18px;
+        background: var(--x-ink); border-bottom: var(--x-line) solid var(--x-yellow);
+      }
+      .x-logo {
+        flex: none; font: 400 28px/1 var(--x-display); letter-spacing: 0.04em;
+        color: var(--x-yellow); text-decoration: none; text-shadow: 2px 2px 0 var(--x-red);
+        display: inline-flex; align-items: center; min-height: 44px;
+      }
+      .x-top nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; min-width: 0; }
+      .x-top nav::-webkit-scrollbar { display: none; }
+      .x-top nav a {
+        flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px;
+        font: 400 19px/1 var(--x-display); letter-spacing: 0.05em; color: var(--x-white); text-decoration: none;
+      }
+      .x-top nav a:hover { color: var(--x-yellow); }
+
+      /* Panels */
+      .x-panel {
+        position: relative; background: var(--x-paper);
+        border: var(--x-line) solid var(--x-ink); box-shadow: var(--x-drop) var(--x-drop) 0 var(--x-ink);
+        padding: 22px;
+      }
+      .x-panel--yellow { background: var(--x-dots-red), var(--x-yellow); }
+      .x-panel--red { background: var(--x-dots-ink), var(--x-red); color: var(--x-white); }
+      .x-panel--ink { background: var(--x-dots-yellow), var(--x-ink); color: var(--x-white); }
+      .x-panel--white { background: var(--x-dots-ink), var(--x-white); }
+      .x-panel h3 { font: 400 28px/1.05 var(--x-display); letter-spacing: 0.04em; margin-bottom: 10px; }
+      .x-panel ul:not([class]) { margin: 0; padding-left: 20px; }
+      .x-panel ul:not([class]) li + li { margin-top: 4px; }
+      .x-grid { display: grid; gap: var(--x-gap); grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .x-span-2 { grid-column: span 2; } .x-span-3 { grid-column: span 3; } .x-span-4 { grid-column: span 4; } .x-span-6 { grid-column: 1 / -1; }
+      .x-tilt-l { transform: rotate(-1deg); } .x-tilt-r { transform: rotate(0.8deg); }
+
+      /* Section heads: caption box + lettering with a burst */
+      .x-head { display: grid; gap: 12px; justify-items: start; margin-bottom: 18px; }
+      .x-cap {
+        display: inline-block; padding: 5px 12px; background: var(--x-yellow); color: var(--x-ink);
+        border: 3px solid var(--x-ink); font: 800 13px/1.2 var(--x-body); letter-spacing: 0.1em; text-transform: uppercase;
+        transform: rotate(-1.5deg);
+      }
+      .x-head h2 {
+        position: relative; isolation: isolate; max-width: 22ch;
+        font: 400 clamp(34px, 5.2vw, 58px)/1 var(--x-display); letter-spacing: 0.03em;
+        color: var(--x-red); text-shadow: 3px 3px 0 var(--x-ink);
+        padding: 10px 0 0 6px;
+      }
+      .x-head h2::before {
+        content: ""; position: absolute; z-index: -1; left: -26px; top: -22px; width: 104px; height: 104px;
+        background: var(--x-yellow); clip-path: var(--x-burst-a);
+      }
+      .x-head__sub { max-width: 60ch; font-size: 17px; }
+
+      /* Buttons */
+      .x-buy {
+        display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        min-height: 50px; padding: 10px 22px;
+        background: var(--x-yellow); color: var(--x-ink);
+        border: var(--x-line) solid var(--x-ink); border-radius: 6px;
+        box-shadow: 5px 5px 0 var(--x-ink);
+        font: 400 22px/1 var(--x-display); letter-spacing: 0.06em;
+        cursor: pointer; text-decoration: none;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+      }
+      .x-buy:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--x-ink); }
+      .x-buy:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--x-ink); }
+      .x-buy--red { background: var(--x-red); color: var(--x-white); }
+      .x-buy--wide { width: 100%; }
+      .x-textlink {
+        display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px;
+        font: 800 16px/1 var(--x-body); color: inherit; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px;
+      }
+
+      /* Hero */
+      .x-hero {
+        position: relative; isolation: isolate; overflow: hidden; min-height: 600px;
+        display: grid; align-content: end; gap: 16px; padding: 34px;
+        border: 6px solid var(--x-ink); box-shadow: 8px 8px 0 var(--x-ink); background: var(--x-ink);
+      }
+      .x-hero__img { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; }
+      .x-hero::before {
+        content: ""; position: absolute; inset: -40%; z-index: -2;
+        background: repeating-conic-gradient(from 0deg at 50% 50%, rgb(255 210 0 / 0) 0deg 5deg, rgb(255 210 0 / 0.38) 5deg 7deg, rgb(255 210 0 / 0) 7deg 11deg, rgb(215 25 31 / 0.3) 11deg 12.5deg);
+        transform-origin: 50% 50%;
+        -webkit-mask: radial-gradient(circle at 50% 50%, transparent 18%, #000 46%);
+                mask: radial-gradient(circle at 50% 50%, transparent 18%, #000 46%);
+      }
+      .x-hero::after {
+        content: ""; position: absolute; inset: 0; z-index: -1;
+        background: radial-gradient(circle, rgb(17 17 17 / 0.5) 1.6px, transparent 2px) 0 0 / 9px 9px;
+        -webkit-mask: linear-gradient(to top, #000 0%, transparent 70%);
+                mask: linear-gradient(to top, #000 0%, transparent 70%);
+      }
+      .x-hero__burst { position: relative; isolation: isolate; justify-self: start; padding: 72px 82px; margin: 0 0 -10px -30px; }
+      .x-hero__burst::before, .x-hero__burst::after {
+        content: ""; position: absolute; inset: 0; z-index: -2; background: var(--x-ink); clip-path: var(--x-burst-b);
+        transform: scale(1.04, 1.06);
+      }
+      .x-hero__burst::after { z-index: -1; background: var(--x-red); transform: none; }
+      .x-hero h1 {
+        font: 400 clamp(52px, 8.4vw, 112px)/0.9 var(--x-display); letter-spacing: 0.03em; max-width: 9ch;
+        color: var(--x-yellow); -webkit-text-stroke: 2px var(--x-ink); paint-order: stroke fill;
+        text-shadow: 5px 5px 0 var(--x-ink); transform: rotate(-3deg);
+      }
+      .x-hero__copy { display: grid; gap: 14px; justify-items: start; max-width: 620px; }
+      .x-hero__sub {
+        background: var(--x-paper); border: var(--x-line) solid var(--x-ink); box-shadow: 5px 5px 0 var(--x-ink);
+        padding: 14px 16px; font-size: 17px; font-weight: 600;
+      }
+      .x-hero__links { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
+      .x-hero__links .x-textlink { background: var(--x-white); border: 3px solid var(--x-ink); padding: 0 12px; text-decoration: none; }
+      .x-hero__credit {
+        position: absolute; top: 14px; right: 14px; padding: 3px 8px; background: var(--x-ink); color: var(--x-white);
+        font: 600 12px/1.3 var(--x-body);
+      }
+
+      /* Product */
+      .x-product__media { display: grid; place-items: center; margin: 0; padding: 16px; min-height: 100%; }
+      .x-product__media img { display: block; width: 100%; height: auto; border: 3px solid var(--x-ink); }
+      .x-product__body { display: grid; gap: 16px; align-content: start; }
+      .x-product__body h3 { margin: 0; }
+      .x-price { font: 400 54px/1 var(--x-display); letter-spacing: 0.03em; color: var(--x-red); text-shadow: 3px 3px 0 var(--x-ink); }
+      .x-label { font: 800 13px/1.2 var(--x-body); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; padding: 0; }
+      .x-options { display: flex; flex-wrap: wrap; gap: 10px; border: 0; padding: 0; margin: 0; }
+      .x-options label {
+        display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 14px;
+        border: 3px solid var(--x-ink); background: var(--x-white); font: 800 16px/1 var(--x-body); cursor: pointer;
+      }
+      .x-options label:has(input:checked) { background: var(--x-yellow); box-shadow: 4px 4px 0 var(--x-ink); }
+      .x-options label span { font-weight: 400; }
+      .x-options input { accent-color: var(--x-red); width: 18px; height: 18px; margin: 0; }
+      .x-qty { display: inline-flex; align-items: center; border: 3px solid var(--x-ink); background: var(--x-white); }
+      .x-qty button { flex: none; width: 50px; min-width: 50px; height: 50px; min-height: 50px; padding: 0; border: 0; background: var(--x-yellow); color: var(--x-ink); font: 400 26px/1 var(--x-display); cursor: pointer; }
+      .x-qty button:first-child { border-right: 3px solid var(--x-ink); }
+      .x-qty button:last-child { border-left: 3px solid var(--x-ink); }
+      .x-qty button:hover { background: var(--x-red); color: var(--x-white); }
+      .x-qty output { min-width: 44px; text-align: center; font: 800 18px/1 var(--x-body); }
+      .x-bullets { margin: 0; padding: 0; list-style: none; }
+      .x-bullets li { position: relative; padding: 8px 0 8px 26px; border-bottom: 2px dashed var(--x-ink); margin: 0; }
+      .x-bullets li:last-child { border-bottom: 0; }
+      .x-bullets li::before {
+        content: ""; position: absolute; left: 0; top: 12px; width: 16px; height: 16px;
+        background: var(--x-red); clip-path: var(--x-burst-a);
+      }
+      .x-ship { font-weight: 800; background: var(--x-yellow); border: 3px solid var(--x-ink); padding: 8px 12px; }
+
+      /* Stats and lettering */
+      .x-stat { display: grid; gap: 4px; align-content: center; text-align: center; min-height: 170px; }
+      .x-stat__fig { font: 400 clamp(56px, 7vw, 84px)/0.95 var(--x-display); letter-spacing: 0.03em; color: var(--x-yellow); -webkit-text-stroke: 2px var(--x-ink); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--x-ink); }
+      .x-panel--yellow .x-stat__fig { color: var(--x-red); }
+      .x-stat__label { font: 800 14px/1.2 var(--x-body); letter-spacing: 0.08em; text-transform: uppercase; }
+      .x-sfx {
+        position: absolute; z-index: 2; pointer-events: none;
+        font: 400 34px/1 var(--x-display); letter-spacing: 0.05em; color: var(--x-red);
+        -webkit-text-stroke: 1.5px var(--x-ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--x-ink);
+      }
+
+      /* Speech balloon */
+      .x-balloon {
+        position: relative; display: block; margin: 6px 0 26px; padding: 14px 18px;
+        background: var(--x-white); color: var(--x-ink); border: 3px solid var(--x-ink); border-radius: 50% / 40%;
+        font: 400 24px/1.1 var(--x-display); letter-spacing: 0.04em; text-align: center;
+      }
+      .x-balloon::before, .x-balloon::after {
+        content: ""; position: absolute; left: 22%; width: 0; height: 0; border-style: solid;
+      }
+      .x-balloon::before { bottom: -22px; border-width: 22px 4px 0 18px; border-color: var(--x-ink) transparent transparent transparent; }
+      .x-balloon::after { bottom: -15px; left: calc(22% + 3px); border-width: 16px 2px 0 13px; border-color: var(--x-white) transparent transparent transparent; }
+      .x-balloon--big { font: 400 20px/1.25 var(--x-body); font-weight: 600; letter-spacing: 0; text-align: left; border-radius: 28px; padding: 18px 22px; }
+      .x-balloon--big strong { display: block; font: 400 30px/1 var(--x-display); letter-spacing: 0.04em; color: var(--x-red); margin-bottom: 6px; }
+
+      /* Timeline panels */
+      .x-year {
+        display: inline-grid; place-items: center; width: 108px; height: 108px; margin: -8px 0 10px -8px;
+        background: var(--x-yellow); clip-path: var(--x-burst-a);
+        font: 400 32px/1 var(--x-display); letter-spacing: 0.03em; color: var(--x-ink);
+      }
+      .x-panel--red .x-year { background: var(--x-yellow); }
+      .x-now { display: inline-block; margin-bottom: 8px; padding: 3px 10px; background: var(--x-ink); color: var(--x-yellow); font: 400 18px/1.2 var(--x-display); letter-spacing: 0.06em; }
+
+      /* State tags */
+      .x-states { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 14px; padding: 0; list-style: none; }
+      .x-states li { margin: 0; }
+      .x-states abbr {
+        display: inline-grid; place-items: center; min-width: 58px; min-height: 52px; padding: 4px 10px;
+        border: 3px solid var(--x-ink); background: var(--x-yellow); text-decoration: none;
+        font: 400 30px/1 var(--x-display); letter-spacing: 0.05em; box-shadow: 4px 4px 0 var(--x-ink);
+      }
+      .x-states--outline abbr { background: var(--x-white); box-shadow: none; border-style: dashed; }
+      .x-subhead { font: 800 13px/1.2 var(--x-body); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+      .x-season { margin: 0; display: grid; gap: 0; }
+      .x-season div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 3px solid var(--x-ink); }
+      .x-season div:last-child { border-bottom: 0; }
+      .x-season dt { font-weight: 800; }
+      .x-season dt small { display: block; font-weight: 400; font-size: 14px; }
+      .x-season dd { margin: 0; font: 400 26px/1 var(--x-display); letter-spacing: 0.04em; white-space: nowrap; color: var(--x-red); }
+
+      /* Spread map */
+      .x-map { margin: 0 0 var(--x-gap); padding: 14px; display: grid; gap: 12px; }
+      .x-map img { display: block; width: 100%; height: auto; border: 3px solid var(--x-ink); }
+      .x-map figcaption {
+        justify-self: start; padding: 4px 12px; background: var(--x-yellow); color: var(--x-ink);
+        border: 3px solid var(--x-ink); font: 400 24px/1.1 var(--x-display); letter-spacing: 0.05em;
+      }
+
+      /* Steps */
+      .x-step__num {
+        display: inline-grid; place-items: center; width: 64px; height: 64px; margin-bottom: 12px;
+        background: var(--x-red); color: var(--x-white); border: var(--x-line) solid var(--x-ink); border-radius: 50%;
+        font: 400 34px/1 var(--x-display);
+      }
+      .x-step__eyebrow { font: 800 13px/1.2 var(--x-body); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+      .x-capbox { background: var(--x-yellow); border: var(--x-line) solid var(--x-ink); padding: 14px 18px; box-shadow: 5px 5px 0 var(--x-ink); }
+      .x-capbox h3 { font: 400 26px/1 var(--x-display); letter-spacing: 0.04em; margin: 0 0 4px; }
+
+      /* FAQ */
+      .x-faq h3 { color: var(--x-red); }
+
+      /* Final band */
+      .x-band {
+        position: relative; isolation: isolate; overflow: hidden;
+        display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; align-items: center;
+        padding: 36px; background: var(--x-red); color: var(--x-white);
+        border: 6px solid var(--x-ink); box-shadow: 8px 8px 0 var(--x-ink);
+      }
+      .x-band::before {
+        content: ""; position: absolute; inset: 0; z-index: -1;
+        background: repeating-linear-gradient(-12deg, transparent 0 22px, rgb(255 210 0 / 0.28) 22px 25px, transparent 25px 48px, rgb(17 17 17 / 0.22) 48px 50px);
+      }
+      .x-band h2 {
+        font: 400 clamp(40px, 5.6vw, 68px)/0.98 var(--x-display); letter-spacing: 0.03em;
+        color: var(--x-yellow); -webkit-text-stroke: 2px var(--x-ink); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--x-ink);
+      }
+      .x-band__form { background: var(--x-paper); color: var(--x-ink); border: var(--x-line) solid var(--x-ink); box-shadow: 6px 6px 0 var(--x-ink); padding: 20px; }
+      .x-band .x-links { display: flex; flex-wrap: wrap; gap: 14px; }
+
+      /* Forms */
+      .x-form { display: grid; gap: 10px; }
+      .x-form__row { display: flex; flex-wrap: wrap; gap: 10px; }
+      .x-field { display: grid; gap: 4px; flex: 1 1 180px; }
+      .x-field span { font: 800 13px/1.2 var(--x-body); letter-spacing: 0.08em; text-transform: uppercase; }
+      .x-field input {
+        min-height: 48px; padding: 8px 12px; border-radius: 0;
+        border: 3px solid var(--x-ink); background: var(--x-white); color: var(--x-ink); font: 400 16px/1.3 var(--x-body);
+      }
+      .x-field select.x-select { min-height: 48px; padding: 8px 12px; border-radius: 0; border: 3px solid var(--x-ink); background: var(--x-white); color: var(--x-ink); font: 400 16px/1.3 var(--x-body); }
+      .x-field input:focus { outline: 3px solid var(--x-red); outline-offset: 2px; }
+      .x-field input[aria-invalid="true"] { border-color: var(--x-red); background: var(--x-paper); box-shadow: inset 0 0 0 2px var(--x-red); }
+      .x-error { font: 800 14px/1.3 var(--x-body); color: var(--x-red); min-height: 18px; }
+      .x-done { font: 800 18px/1.4 var(--x-body); background: var(--x-yellow); border: 3px solid var(--x-ink); padding: 12px 14px; }
+
+      /* Sold Out modal */
+      .x-modal {
+        width: min(460px, calc(100% - 36px)); max-width: none; max-height: none; padding: 0; margin: auto;
+        border: 0; background: transparent; color: var(--x-ink); overflow: visible;
+      }
+      .x-modal::backdrop {
+        background: radial-gradient(circle, rgb(255 210 0 / 0.3) 1.6px, transparent 2px) 0 0 / 12px 12px, rgb(17 17 17 / 0.8);
+      }
+      .x-modal__burst { position: absolute; inset: -70px -60px; z-index: -1; pointer-events: none; }
+      .x-modal__burst::before, .x-modal__burst::after { content: ""; position: absolute; inset: 0; clip-path: var(--x-burst-b); }
+      .x-modal__burst::before { background: var(--x-ink); }
+      .x-modal__burst::after { inset: 8px; background: repeating-conic-gradient(from 0deg, var(--x-yellow) 0deg 9deg, #ffe04d 9deg 18deg); }
+      .x-modal__panel {
+        position: relative; background: var(--x-paper); border: 5px solid var(--x-ink); box-shadow: 8px 8px 0 var(--x-ink);
+        padding: 46px 24px 24px;
+      }
+      .x-modal__sfx {
+        position: absolute; top: -40px; left: 50%; transform: translateX(-50%) rotate(-6deg); white-space: nowrap;
+        font: 400 64px/1 var(--x-display); letter-spacing: 0.04em;
+        color: var(--x-red); -webkit-text-stroke: 3px var(--x-ink); paint-order: stroke fill; text-shadow: 5px 5px 0 var(--x-ink);
+      }
+      .x-modal h2 { font: 400 32px/1 var(--x-display); letter-spacing: 0.04em; margin: 0 40px 10px 0; }
+      .x-modal__panel > div > p:not(.x-done):not(.x-error) { margin-bottom: 16px; }
+      .x-modal__close {
+        position: absolute; top: 10px; right: 10px; z-index: 2; width: 44px; height: 44px;
+        border: 3px solid var(--x-ink); border-radius: 50%; background: var(--x-red); color: var(--x-white);
+        font: 400 26px/1 var(--x-display); cursor: pointer; box-shadow: 3px 3px 0 var(--x-ink);
+      }
+
+      /* Footer */
+      .x-foot {
+        margin-inline: -18px; padding: 26px 18px 30px; background: var(--x-ink); color: var(--x-white);
+        border-top: 6px solid var(--x-yellow); display: grid; gap: 8px;
+      }
+      .x-foot p { font-size: 15px; }
+      .x-foot a { color: var(--x-yellow); font-weight: 800; display: inline-flex; align-items: center; min-height: 44px; }
+      .x-foot__brand { font: 400 30px/1 var(--x-display); letter-spacing: 0.05em; color: var(--x-yellow); text-shadow: 2px 2px 0 var(--x-red); }
+
+      /* Motion: panels slide and pop in */
+      @media (prefers-reduced-motion: no-preference) {
+        .js .x-reveal { opacity: 0; transform: translateY(40px) scale(0.92) rotate(var(--x-from, -2deg)); transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.2, 1.5, 0.4, 1); }
+        .js .x-reveal.x-tilt-l.is-in { transform: rotate(-1deg); }
+        .js .x-reveal.x-tilt-r.is-in { transform: rotate(0.8deg); }
+        .js .x-reveal.is-in { opacity: 1; transform: none; }
+        .js .x-reveal:nth-child(even) { --x-from: 2deg; transition-delay: 0.08s; }
+        .x-hero::before { animation: x-spin 60s linear infinite; }
+        .x-hero__burst { animation: x-zoom 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+        .x-modal[open] .x-modal__panel { animation: x-pop 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+        .x-modal[open] .x-modal__burst { animation: x-burst 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+        .x-modal[open] .x-modal__sfx { animation: x-sfx 0.6s 0.15s cubic-bezier(0.2, 1.8, 0.4, 1) both; }
+      }
+      @keyframes x-spin { to { transform: rotate(360deg); } }
+      @keyframes x-zoom { from { opacity: 0; transform: scale(0.3) rotate(-12deg); } to { opacity: 1; transform: none; } }
+      @keyframes x-pop { 0% { opacity: 0; transform: scale(0.2) rotate(-14deg); } 100% { opacity: 1; transform: none; } }
+      @keyframes x-burst { 0% { opacity: 0; transform: scale(0) rotate(-60deg); } 100% { opacity: 1; transform: none; } }
+      @keyframes x-sfx { 0% { opacity: 0; transform: translateX(-50%) scale(2.4) rotate(-20deg); } 100% { opacity: 1; transform: translateX(-50%) rotate(-6deg); } }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .x-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .x-span-2, .x-span-3 { grid-column: span 1; }
+        .x-span-4, .x-span-6, .x-span-wide-m { grid-column: 1 / -1; }
+        .x-band { grid-template-columns: minmax(0, 1fr); padding: 26px 20px; gap: 22px; }
+      }
+      @media (max-width: 600px) {
+        .page { padding-inline: 14px; }
+        .x-top, .x-foot { margin-inline: -14px; padding-inline: 14px; }
+        .x-top { gap: 8px; }
+        .x-logo { font-size: 24px; }
+        .x-top nav a { font-size: 17px; padding: 0 8px; min-width: 48px; justify-content: center; }
+        .x-main { gap: 28px; }
+        .x-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .x-grid > * { grid-column: 1 / -1 !important; }
+        .x-panel { padding: 18px; box-shadow: 4px 4px 0 var(--x-ink); }
+        .x-tilt-l { transform: rotate(-0.5deg); } .x-tilt-r { transform: rotate(0.4deg); }
+        .js .x-reveal.x-tilt-l.is-in { transform: rotate(-0.5deg); }
+        .js .x-reveal.x-tilt-r.is-in { transform: rotate(0.4deg); }
+        .x-hero { min-height: 0; padding: 0; border-width: 4px; box-shadow: 5px 5px 0 var(--x-ink); align-content: start; gap: 0; background: var(--x-dots-yellow), var(--x-ink); }
+        .x-hero__img { position: relative; inset: auto; z-index: 0; aspect-ratio: 4 / 3; height: auto; border-bottom: 4px solid var(--x-ink); }
+        .x-hero::before { inset: auto -60% auto -60%; top: -40%; height: 120vw; }
+        .x-hero::after { display: none; }
+        .x-hero__burst { margin: -80px auto -6px; padding: 50px 46px; justify-self: center; z-index: 1; }
+        .x-hero h1 { font-size: 50px; }
+        .x-hero__copy { padding: 6px 16px 22px; position: relative; z-index: 1; }
+        .x-hero__sub { font-size: 16px; }
+        .x-hero__credit { top: 8px; right: 8px; }
+        .x-head h2 { font-size: 36px; }
+        .x-head h2::before { width: 80px; height: 80px; left: -14px; top: -14px; }
+        .x-stat { min-height: 130px; }
+        .x-modal__burst { inset: -46px -24px; }
+        .x-modal__sfx { font-size: 50px; top: -32px; }
+        .x-modal__panel { padding: 40px 18px 20px; }
+        .x-modal h2 { font-size: 28px; }
+        .x-sfx { font-size: 28px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="top">
+      <header class="x-top">
+        <a class="x-logo" href="#top">JoroSpray!</a>
+        <nav aria-label="Sections">
+          <a href="#shop">Shop</a>
+          <a href="#joro">Meet the Joro</a>
+          <a href="#spread">Spread</a>
+          <a href="#sightings">Sightings</a>
+          <a href="#use">How to use</a>
+          <a href="#bulk">Bulk</a>
+          <a href="#faq">FAQ</a>
+          <a href="#ready">Waitlist</a>
+        </nav>
+      </header>
+      <main class="x-main">
+        <section class="x-hero" aria-labelledby="hero-title">
+          <img class="x-hero__img" src="comic-hero3.jpg" alt="Comic panel of a JoroSpray bottle blasting a giant Joro spider over the Atlanta skyline" />
+          <div class="x-hero__burst"><h1 id="hero-title">The Joros are spreading.</h1></div>
+          <div class="x-hero__copy">
+            <p class="x-cap">JoroSpray · Plant-based spider spray</p>
+            <p class="x-hero__sub">Giant Joro spiders have reached intown Atlanta, all the way to Old Fourth Ward, and they're moving across the Southeast. JoroSpray is a plant-based spider spray that repels spiders, so they pack up and move on from your porch, doorway and deck.</p>
+            <div class="x-hero__links">
+              <button type="button" class="x-buy x-buy--red" data-buy="hero">Buy now — $24.99</button>
+              <a class="x-textlink" href="#ready">Get notified</a>
+            </div>
+          </div>
+        </section>
+
+        <section id="shop">
+          <div class="x-head">
+            <p class="x-cap">Shop</p>
+            <h2>One bottle covers the porch, the doorway and the eaves.</h2>
+          </div>
+          <div class="x-grid">
+            <figure class="x-panel x-panel--yellow x-product__media x-span-3 x-tilt-l x-reveal">
+              <img src="comic-product2.jpg" alt="Comic panel of a hand spraying JoroSpray at a fleeing Joro spider" />
+            </figure>
+            <div class="x-panel x-product__body x-span-3 x-reveal">
+              <div>
+                <h3>JoroSpray Spider Spray</h3>
+                <p class="x-price" id="price">$24.99</p>
+              </div>
+              <fieldset class="x-options">
+                <legend class="x-label">Option</legend>
+                <label><input type="radio" name="sku" value="single" data-price="24.99" checked /> Single <span>$24.99 + $5.99 shipping</span></label>
+                <label><input type="radio" name="sku" value="2pack" data-price="39.99" /> 2-pack <span>$39.99, free shipping</span></label>
+                <label><input type="radio" name="sku" value="3pack" data-price="54.99" /> 3-pack <span>$54.99, free shipping</span></label>
+                <label><input type="radio" name="sku" value="gallon" data-price="59.99" /> 1-gallon refill <span>$59.99, free shipping</span></label>
+              </fieldset>
+              <div>
+                <p class="x-label" id="qty-label">Quantity</p>
+                <div class="x-qty" role="group" aria-labelledby="qty-label">
+                  <button type="button" id="qty-minus" aria-label="Decrease quantity">−</button>
+                  <output id="qty" aria-live="polite">1</output>
+                  <button type="button" id="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
+              <button type="button" class="x-buy x-buy--wide" data-buy="product">Add to cart</button>
+              <ul class="x-bullets">
+                <li>Made with peppermint oil, cinnamon oil and geraniol</li>
+                <li>Kills spiders on contact, including Joro spiders</li>
+                <li>Repels spiders so they move on from treated porches, railings and eaves</li>
+                <li>No synthetic pesticides</li>
+                <li>Bottles are 16 fl oz; the gallon refills about eight</li>
+                <li>Pleasant mint-cinnamon scent</li>
+                <li>Made in the USA</li>
+              </ul>
+              <p class="x-ship">First batch ships spring 2027, ahead of Joro season.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="joro">
+          <div class="x-head">
+            <p class="x-cap">Meet the Joro</p>
+            <h2>Big, bright yellow, and settling into city life.</h2>
+            <p class="x-head__sub"><em>Trichonephila clavata</em>, native to East Asia.</p>
+          </div>
+          <div class="x-grid">
+            <div class="x-panel x-panel--ink x-stat x-span-2 x-tilt-l x-reveal"><span class="x-stat__fig">3–4 in</span><span class="x-stat__label">Female leg span</span></div>
+            <div class="x-panel x-panel--yellow x-stat x-span-2 x-reveal"><span class="x-stat__fig">20 ft</span><span class="x-stat__label">Web length, up to</span><span class="x-sfx" aria-hidden="true" style="top: -18px; right: -8px; transform: rotate(10deg)">Whoa!</span></div>
+            <div class="x-panel x-panel--red x-stat x-span-2 x-tilt-r x-reveal"><span class="x-stat__fig">500</span><span class="x-stat__label">Eggs at a time, up to</span></div>
+            <div class="x-panel x-panel--white x-span-2 x-reveal">
+              <h3>How to spot one</h3>
+              <ul>
+                <li>Females: yellow and blue-gray banded bodies</li>
+                <li>A red patch underneath</li>
+                <li>Golden webs, often strung across porches and eaves</li>
+              </ul>
+            </div>
+            <div class="x-panel x-span-2 x-tilt-r x-reveal">
+              <h3>Why they spread</h3>
+              <p>In spring, young Joros balloon on silk threads to new spots. They tolerate cold, traffic noise and city life.</p>
+            </div>
+            <div class="x-panel x-panel--yellow x-span-2 x-span-wide-m x-reveal">
+              <h3>Should you worry?</h3>
+              <p class="x-balloon">Mostly a nuisance, not a danger.</p>
+              <p>Their bite is rarely an issue, experts say.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="spread">
+          <div class="x-head">
+            <p class="x-cap">Where they've spread</p>
+            <h2>From one I-85 exit to five states in about a decade.</h2>
+          </div>
+          <figure class="x-panel x-panel--ink x-map x-tilt-r x-reveal">
+            <img src="comic-map2.jpg" alt="Comic map of Joro spiders spreading across Georgia, the Carolinas, Tennessee and Alabama" />
+            <figcaption>Spreading across the Southeast</figcaption>
+          </figure>
+          <ol class="x-grid" style="list-style: none; margin: 0; padding: 0">
+            <li class="x-panel x-panel--white x-span-3 x-tilt-l x-reveal">
+              <p class="x-year">2014</p>
+              <p>First confirmed in the US near Braselton and Hoschton, GA, along I-85.</p>
+            </li>
+            <li class="x-panel x-span-3 x-reveal">
+              <p class="x-year">2022</p>
+              <p>Roughly 75 miles in every direction. Atlanta numbers take off.</p>
+            </li>
+            <li class="x-panel x-panel--yellow x-span-2 x-reveal">
+              <p class="x-year" style="background: var(--x-white)">2025</p>
+              <p>Joro numbers in Atlanta doubled in three years (AJC).</p>
+            </li>
+            <li class="x-panel x-panel--red x-span-4 x-tilt-r x-reveal" aria-current="true">
+              <p class="x-year">2026</p>
+              <p class="x-now">Now</p>
+              <p>Established in Georgia, South Carolina, North Carolina, Tennessee and Alabama, with isolated populations in Maryland, Virginia and Pennsylvania. Researchers expect them across most of the eastern US.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="sightings">
+          <div class="x-head">
+            <p class="x-cap">Sightings across the Southeast</p>
+            <h2>Five states and counting, heading up the East Coast.</h2>
+          </div>
+          <div class="x-grid">
+            <div class="x-panel x-panel--white x-span-4 x-tilt-l x-reveal">
+              <h3>The map so far</h3>
+              <p class="x-subhead">Established</p>
+              <ul class="x-states">
+                <li><abbr title="Georgia">GA</abbr></li>
+                <li><abbr title="South Carolina">SC</abbr></li>
+                <li><abbr title="North Carolina">NC</abbr></li>
+                <li><abbr title="Tennessee">TN</abbr></li>
+                <li><abbr title="Alabama">AL</abbr></li>
+              </ul>
+              <p class="x-subhead">Isolated populations</p>
+              <ul class="x-states x-states--outline">
+                <li><abbr title="Maryland">MD</abbr></li>
+                <li><abbr title="Virginia">VA</abbr></li>
+                <li><abbr title="Pennsylvania">PA</abbr></li>
+              </ul>
+              <p><strong>Next:</strong> researchers expect them across most of the eastern US.</p>
+            </div>
+            <div class="x-panel x-panel--ink x-span-2 x-reveal">
+              <h3 style="color: var(--x-yellow)">Atlanta, for one</h3>
+              <p>Joros used to show up mostly north of the city, as far south as Buckhead. Now they're intown in Old Fourth Ward, Midtown and Downtown.</p>
+            </div>
+            <div class="x-panel x-span-3 x-reveal">
+              <h3>The season</h3>
+              <dl class="x-season">
+                <div><dt>Peak season <small>Webs at their biggest</small></dt><dd>Aug to Oct</dd></div>
+                <div><dt>Egg laying <small>Females lay up to 500 eggs at a time</small></dt><dd>From mid-Oct</dd></div>
+                <div><dt>Hatchlings appear</dt><dd>Spring</dd></div>
+              </dl>
+            </div>
+            <aside class="x-panel x-panel--red x-span-3 x-tilt-r x-reveal" aria-label="Report a sighting">
+              <p class="x-balloon x-balloon--big"><strong>Seen one?</strong> Report it to Joro Watch. It's the University of Georgia's tracking project.</p>
+              <a class="x-buy" href="https://jorowatch.org/" target="_blank" rel="noopener">Joro Watch</a>
+            </aside>
+          </div>
+        </section>
+
+        <section id="use">
+          <div class="x-head">
+            <p class="x-cap">How to use</p>
+            <h2>Spray, cover the spots they build, reapply after rain.</h2>
+          </div>
+          <ol class="x-grid" style="list-style: none; margin: 0; padding: 0">
+            <li class="x-panel x-panel--yellow x-span-2 x-tilt-l x-reveal">
+              <p class="x-step__num">1</p>
+              <p class="x-step__eyebrow">On contact</p>
+              <h3>Spray the spider directly</h3>
+              <span class="x-sfx" aria-hidden="true" style="top: 14px; right: 14px; transform: rotate(8deg)">Psssht!</span>
+            </li>
+            <li class="x-panel x-panel--white x-span-2 x-reveal">
+              <p class="x-step__num">2</p>
+              <p class="x-step__eyebrow">Where webs go up</p>
+              <h3>Spray webs and anchor points</h3>
+              <p>Porch railings, door frames, eaves and light fixtures. The scent repels spiders, so they move on.</p>
+            </li>
+            <li class="x-panel x-span-2 x-span-wide-m x-tilt-r x-reveal">
+              <p class="x-step__num">3</p>
+              <p class="x-step__eyebrow">After weather</p>
+              <h3>Reapply after rain</h3>
+              <p>Rain washes it off. A gallon refill keeps you covered all season.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="bulk">
+          <div class="x-head">
+            <p class="x-cap">Bulk orders</p>
+            <h2>Parks, playgrounds, patios. Big spaces, big orders.</h2>
+          </div>
+          <div class="x-grid">
+            <div class="x-panel x-panel--yellow x-span-3 x-tilt-l x-reveal">
+              <h3>Built for places that host a crowd</h3>
+              <p>Cities and counties, parks and recreation departments, schools, campgrounds, golf courses, wedding and event venues, restaurant patios, HOAs and property managers.</p>
+              <ul class="x-bullets">
+                <li>Gallons, 5-gallon pails and 55-gallon drums</li>
+                <li>Volume pricing and net terms for public agencies</li>
+                <li>Season-long supply, delivered before Joro season</li>
+              </ul>
+            </div>
+            <div class="x-panel x-panel--white x-span-3 x-reveal">
+              <h3>Request a quote</h3>
+              <form class="x-form" data-bulk novalidate>
+                <label class="x-field"><span>Work email</span><input type="email" name="email" autocomplete="email" required /></label>
+                <label class="x-field"><span>Organization</span><input type="text" name="org" autocomplete="organization" maxlength="120" required /></label>
+                <label class="x-field"><span>Type</span><select name="orgtype" class="x-select">
+                  <option value="municipality">City or county</option>
+                  <option value="parks_rec">Parks and recreation</option>
+                  <option value="school">School or campus</option>
+                  <option value="venue">Event venue or outdoor dining</option>
+                  <option value="hoa_property">HOA or property manager</option>
+                  <option value="other">Other</option>
+                </select></label>
+                <div class="x-form__row">
+                  <label class="x-field"><span>Est. gallons per season</span><input type="text" name="gallons" inputmode="numeric" maxlength="8" /></label>
+                  <label class="x-field" style="flex-basis: 100px"><span>ZIP</span><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" /></label>
+                </div>
+                <p class="x-error" aria-live="polite"></p>
+                <button type="submit" class="x-buy x-buy--wide">Get a quote</button>
+              </form>
+              <p class="x-done" hidden tabindex="-1">Got it. We'll email you a quote within two business days.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" class="x-faq">
+          <div class="x-head"><p class="x-cap">FAQ</p><h2>Straight answers.</h2></div>
+          <div class="x-grid">
+            <div class="x-panel x-panel--white x-span-3 x-reveal"><h3>Is it a pesticide?</h3><p>Yes, a minimum-risk pesticide made with plant-based active ingredients, listed in full on the label.</p></div>
+            <div class="x-panel x-span-3 x-tilt-r x-reveal"><h3>Does it work on other spiders?</h3><p>It kills many common house and garden spiders on contact.</p></div>
+            <div class="x-panel x-panel--yellow x-span-3 x-tilt-l x-reveal"><h3>Does it kill or repel?</h3><p>Both. Spray a spider directly to kill it. Spray where webs go up and the scent repels spiders, so they move on somewhere else. Reapply after rain.</p></div>
+            <div class="x-panel x-panel--white x-span-3 x-reveal"><h3>Do you sell in bulk?</h3><p>Yes. Gallons for homeowners, and bulk pricing for cities, parks departments and outdoor venues. <a href="#bulk">Request a quote</a>.</p></div>
+            <div class="x-panel x-span-3 x-tilt-l x-reveal"><h3>When does it ship?</h3><p>The first batch ships spring 2027.</p></div>
+            <div class="x-panel x-panel--white x-span-3 x-reveal"><h3>Will you sell in my state?</h3><p>Georgia first, then across the Southeast and up the East Coast.</p></div>
+          </div>
+        </section>
+
+        <section id="ready">
+          <div class="x-band x-reveal">
+            <h2>Joro season comes back every August. Be ready.</h2>
+            <div class="x-band__form">
+              <form class="x-form" data-source="direct_form" novalidate>
+                <div class="x-form__row">
+                  <label class="x-field"><span>Email</span><input type="email" name="email" autocomplete="email" required /></label>
+                  <label class="x-field" style="flex-basis: 100px"><span>ZIP (optional)</span><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" /></label>
+                </div>
+                <p class="x-error" aria-live="polite"></p>
+                <div class="x-links">
+                  <button type="submit" class="x-buy">Notify me</button>
+                  <button type="button" class="x-buy x-buy--red" data-buy="footer">Buy now — $24.99</button>
+                </div>
+              </form>
+              <p class="x-done" hidden tabindex="-1">You're on the list. We'll email you before the next batch ships.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="x-foot">
+        <p class="x-foot__brand">JoroSpray</p>
+        <p>Sold by JoroSpray · <a href="mailto:hello@jorospray.com">hello@jorospray.com</a></p>
+        <p><small>All ingredients are listed on the product label.</small></p>
+      </footer>
+    </div>
+
+    <dialog class="x-modal" id="soldout" aria-labelledby="soldout-title">
+      <div class="x-modal__burst" aria-hidden="true"></div>
+      <div class="x-modal__panel">
+        <p class="x-modal__sfx" aria-hidden="true">Sold out!</p>
+        <button type="button" class="x-modal__close" aria-label="Close">×</button>
+        <div id="soldout-form-wrap">
+          <h2 id="soldout-title">Sold out. First batch gone.</h2>
+          <p>Joro season wiped us out. Join the waitlist and we'll email you when the next batch ships.</p>
+          <form class="x-form" data-source="buy_modal" novalidate>
+            <label class="x-field"><span>Email</span><input type="email" name="email" autocomplete="email" required /></label>
+            <label class="x-field"><span>ZIP (optional)</span><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" /></label>
+            <p class="x-error" aria-live="polite"></p>
+            <button type="submit" class="x-buy x-buy--wide">Notify me</button>
+          </form>
+          <p class="x-done" hidden tabindex="-1">You're on the list. We'll email you before the next batch ships.</p>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="hark.js"></script>
+    <script>
+      // TRACK_ENDPOINT: optional URL that receives every event as a JSON POST
+      // (e.g. a webhook or analytics collector). Leave empty to only use
+      // window.dataLayer and any Plausible / gtag already on the page.
+      const TRACK_ENDPOINT = "";
+      const GFORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdOY_tcpyKTx84jAGnES7ZlAY3Ns9X5IWrxvyDXXwEMYH0rRw/formResponse";
+
+      (function () {
+        const PRICES = { single: 24.99, "2pack": 39.99, "3pack": 54.99, gallon: 59.99 };
+        const session = { buy_clicks: 0, waitlist_signups: 0 }; // in memory only, never shown
+        window.dataLayer = window.dataLayer || [];
+
+        function track(name, props) {
+          const evt = Object.assign({ event: name, ts: new Date().toISOString() }, props);
+          try { window.dataLayer.push(evt); } catch (e) {}
+          try { if (typeof window.plausible === "function") window.plausible(name, { props: props }); } catch (e) {}
+          try { if (typeof window.gtag === "function") window.gtag("event", name, props); } catch (e) {}
+          // Google Form capture (JoroSpray Waitlist & Buy Clicks sheet)
+          try {
+            const F = { event:"1055052133", email:"978488475", zip:"1806796870", source:"1470902167", location:"293353431", sku:"1558408823", qty:"1190974427", price:"358785359", after_buy_click:"1581783321" };
+            const fd = new URLSearchParams();
+            fd.append("entry." + F.event, name);
+            Object.keys(props || {}).forEach(function (k) { if (F[k] && props[k] !== undefined && props[k] !== null) fd.append("entry." + F[k], String(props[k])); });
+            fetch(GFORM_URL, { method: "POST", mode: "no-cors", body: fd, keepalive: true }).catch(function () {});
+          } catch (e) {}
+          if (TRACK_ENDPOINT) {
+            try {
+              fetch(TRACK_ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(evt), keepalive: true }).catch(function () {});
+            } catch (e) {}
+          }
+        }
+
+        // Product options
+        let qty = 1;
+        const qtyOut = document.getElementById("qty");
+        const priceEl = document.getElementById("price");
+        function sku() { return document.querySelector('input[name="sku"]:checked').value; }
+        function fmt(n) { return "$" + n.toFixed(2); }
+        function render() { qtyOut.textContent = qty; priceEl.textContent = fmt(PRICES[sku()] * qty); }
+        document.getElementById("qty-minus").addEventListener("click", function () { qty = Math.max(1, qty - 1); render(); });
+        document.getElementById("qty-plus").addEventListener("click", function () { qty = Math.min(10, qty + 1); render(); });
+        document.querySelectorAll('input[name="sku"]').forEach(function (r) { r.addEventListener("change", render); });
+
+        // Fake door
+        const modal = document.getElementById("soldout");
+        const modalForm = modal.querySelector("form");
+        const modalDone = modal.querySelector(".x-done");
+        let lastTrigger = null;
+
+        function openModal() {
+          modalForm.hidden = false; modalDone.hidden = true;
+          modalForm.reset(); modalForm.querySelector(".x-error").textContent = "";
+          modalForm.querySelectorAll("input").forEach(function (i) { i.removeAttribute("aria-invalid"); });
+          if (typeof modal.showModal === "function") modal.showModal(); else modal.setAttribute("open", "");
+          modalForm.querySelector('input[name="email"]').focus();
+        }
+        function closeModal() {
+          if (typeof modal.close === "function") modal.close(); else modal.removeAttribute("open");
+        }
+        modal.addEventListener("close", function () { if (lastTrigger) lastTrigger.focus(); });
+        modal.querySelector(".x-modal__close").addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+
+        document.querySelectorAll("[data-buy]").forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const location = btn.dataset.buy;
+            const s = location === "product" ? sku() : "single";
+            const q = location === "product" ? qty : 1;
+            session.buy_clicks++;
+            track("buy_click", { location: location, sku: s, qty: q, price: PRICES[s] });
+            lastTrigger = btn;
+            openModal();
+          });
+        });
+
+        // Bulk quote form
+        document.querySelectorAll("form[data-bulk]").forEach(function (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const err = form.querySelector(".x-error");
+            const emailIn = form.querySelector('input[name="email"]');
+            const orgIn = form.querySelector('input[name="org"]');
+            const email = emailIn.value.trim(), org = orgIn.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = "Enter a valid email address."; emailIn.focus(); return; }
+            if (!org) { err.textContent = "Enter your organization."; orgIn.focus(); return; }
+            err.textContent = "";
+            track("bulk_quote", { email: email, zip: form.querySelector('input[name="zip"]').value.trim(), source: form.querySelector('select[name="orgtype"]').value, location: org, sku: "bulk", qty: form.querySelector('input[name="gallons"]').value.trim() });
+            form.hidden = true;
+            const done = form.parentElement.querySelector(".x-done");
+            done.hidden = false; done.focus();
+          });
+        });
+
+        // Waitlist forms
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        const ZIP_RE = /^\d{5}(-\d{4})?$/;
+        document.querySelectorAll("form[data-source]").forEach(function (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const emailIn = form.querySelector('input[name="email"]');
+            const zipIn = form.querySelector('input[name="zip"]');
+            const err = form.querySelector(".x-error");
+            const email = emailIn.value.trim();
+            const zip = zipIn.value.trim();
+            emailIn.removeAttribute("aria-invalid"); zipIn.removeAttribute("aria-invalid");
+            if (!EMAIL_RE.test(email)) {
+              err.textContent = "Enter a valid email address.";
+              emailIn.setAttribute("aria-invalid", "true"); emailIn.focus(); return;
+            }
+            if (zip && !ZIP_RE.test(zip)) {
+              err.textContent = "Enter a 5-digit ZIP, or leave it blank.";
+              zipIn.setAttribute("aria-invalid", "true"); zipIn.focus(); return;
+            }
+            err.textContent = "";
+            const source = form.dataset.source;
+            session.waitlist_signups++;
+            track("waitlist_signup", { email: email, zip: zip, source: source, after_buy_click: source === "buy_modal" || session.buy_clicks > 0 });
+            form.hidden = true;
+            const done = form.parentElement.querySelector(".x-done");
+            done.hidden = false; done.focus();
+          });
+        });
+      })();
+    </script>
+    <script>
+      // Comic panels slide and pop in on scroll
+      (function () {
+        var panels = [].slice.call(document.querySelectorAll(".x-reveal"));
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce || !("IntersectionObserver" in window)) {
+          panels.forEach(function (p) { p.classList.add("is-in"); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+        panels.forEach(function (p) { io.observe(p); });
+      })();
+    </script>
+  </body>
+</html>
